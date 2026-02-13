@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Yes/No Story</title>
+
+<style>
+body{
+  margin:0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+  overflow:hidden;
+}
+
+.container{
+  width:90%;
+  max-width:600px;
+}
+
+h1{
+  min-height:80px;
+  font-size:24px;
+}
+
+button{
+  padding:12px 30px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.yes{
+  background:#00ffae;
+  color:black;
+}
+
+.no{
+  background:#ff4d6d;
+  color:white;
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+
+.story{
+  margin-top:20px;
+  font-size:18px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:1s ease;
+}
+
+.story.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.fadeOut{
+  animation:fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut{
+  to{opacity:0; transform:translateY(-20px);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="question"></h1>
+  <div>
+    <button class="yes" onclick="answer('yes')">Yes</button>
+    <button class="no" onclick="answer('no')">No</button>
+  </div>
+  <div class="story" id="story"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    q:"Do you believe love can change destiny?",
+    yes:"✨ A boy once rewrote his fate just to hold her hand. The stars aligned quietly.",
+    no:"🌧️ A lonely path stretched ahead. But even storms whisper hope."
+  },
+  {
+    q:"Would you wait for someone you truly love?",
+    yes:"⏳ Years passed, but two hearts stayed connected beyond time.",
+    no:"🚪 The door closed gently, yet memories stayed like perfume in the air."
+  },
+  {
+    q:"Can distance weaken real feelings?",
+    yes:"🌍 Miles apart, but hearts beat in the same rhythm.",
+    no:"💔 Distance tried... but love laughed softly."
+  },
+  {
+    q:"Is love worth fighting for?",
+    yes:"⚔️ They stood against the world, choosing each other every day.",
+    no:"🌫️ Sometimes surrender is also a kind of bravery."
+  },
+  {
+    q:"Would you choose love over ego?",
+    yes:"🤝 Two souls hugged their pride goodbye.",
+    no:"🪞 Ego won the battle, but love waited patiently."
+  },
+  {
+    q:"Can silence express feelings?",
+    yes:"🌙 In quiet moments, eyes spoke louder than words.",
+    no:"🎭 Words remained unspoken, floating in heavy air."
+  },
+  {
+    q:"Do you trust destiny?",
+    yes:"🌠 Fate smiled and crossed their paths again.",
+    no:"🛤️ They carved their own road, step by step."
+  },
+  {
+    q:"Is forgiveness powerful?",
+    yes:"🌷 One apology bloomed into forever.",
+    no:"🧊 Cold hearts stayed frozen in time."
+  },
+  {
+    q:"Can love survive misunderstandings?",
+    yes:"🌈 After every storm, their rainbow appeared.",
+    no:"🌪️ The storm stayed, but lessons were learned."
+  },
+  {
+    q:"Will you choose love again?",
+    yes:"❤️ And so, the story continues… stronger, deeper, forever.",
+    no:"🌅 Even endings create beautiful sunsets."
+  }
+];
+
+let current = 0;
+const questionEl = document.getElementById("question");
+const storyEl = document.getElementById("story");
+
+function typeWriter(text, element, speed=40){
+  element.innerHTML="";
+  let i=0;
+  const interval=setInterval(()=>{
+    element.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length){
+      clearInterval(interval);
+    }
+  }, speed);
+}
+
+function answer(choice){
+  if(current >= questions.length) return;
+
+  storyEl.classList.remove("show");
+  setTimeout(()=>{
+    storyEl.innerHTML = questions[current][choice];
+    storyEl.classList.add("show");
+
+    setTimeout(()=>{
+      nextQuestion();
+    }, 2500);
+
+  },300);
+}
+
+function nextQuestion(){
+  current++;
+  if(current < questions.length){
+    typeWriter(questions[current].q, questionEl);
+  } else {
+    questionEl.innerHTML="✨ The End ✨";
+    document.querySelector(".yes").style.display="none";
+    document.querySelector(".no").style.display="none";
+  }
+}
+
+typeWriter(questions[current].q, questionEl);
+</script>
+
+</body>
+</html>
